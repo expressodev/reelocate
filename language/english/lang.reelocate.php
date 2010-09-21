@@ -1,9 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * Reelocate module by Crescendo (info@crescendo.net.nz)
- */
-
 $lang = array(
 	// module details
 	'reelocate_module_name' => 'REElocate',
