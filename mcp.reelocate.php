@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
- * Reelocate module by Crescendo (info@crescendo.net.nz)
+ * Reelocate module by Crescendo (support@crescendo.net.nz)
  * 
  * Copyright (c) 2010 Crescendo Multimedia Ltd
  * All rights reserved.
