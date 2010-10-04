@@ -2,7 +2,7 @@
 
 <?php
 	$results = FALSE;
-	foreach (array('site_prefs', 'upload_prefs') as $pref_type)
+	foreach (array('site_prefs', 'channel_prefs', 'upload_prefs') as $pref_type)
 	{
 		if (!empty($$pref_type))
 		{

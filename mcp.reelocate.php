@@ -64,6 +64,7 @@ class Reelocate_mcp {
 		$this->EE->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
 		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_preview_changes'));
 		$this->EE->lang->loadfile('admin');
+		$this->EE->lang->loadfile('admin_content');
 		$this->EE->lang->loadfile('design');
 		$this->EE->lang->loadfile('tools');
 		
@@ -98,6 +99,7 @@ class Reelocate_mcp {
 		}
 		
 		$data['site_prefs'] = $this->_find_site_prefs($search, $replace);
+		$data['channel_prefs'] = $this->_find_channel_prefs($search, $replace);
 		$data['upload_prefs'] = $this->_find_upload_prefs($search, $replace);
 		
 		return $this->EE->load->view('reelocate_preview', $data, TRUE);
@@ -123,6 +125,39 @@ class Reelocate_mcp {
 						$results[$key]['current'] = $value;
 						$results[$key]['current_html'] = preg_replace('/('.preg_quote($search_str, '/').')/i', '<strong>$1</strong>', $value);
 						$results[$key]['updated'] = str_ireplace($search_str, $replace[$id], $value);
+					}
+				}
+			}
+		}
+		
+		ksort($results);
+		return $results;
+	}
+	
+	function _find_channel_prefs($search, $replace)
+	{
+		if (!is_array($search) OR !is_array($replace)) return;
+		if (count($search) != count($replace)) return;
+		
+		// search for upload preferences
+		$results = array();
+		$channel_prefs = $this->EE->db->get('channels')->result_array();
+		// loop through channels
+		foreach ($channel_prefs as $row)
+		{
+			// loop through find/replace strings
+			foreach ($search as $id => $search_str)
+			{
+				// loop through channel preference names
+				foreach (array('channel_url', 'channel_notify_emails', 'comment_url', 'search_results_url', 'ping_return_url', 'rss_url') as $upload_pref_name)
+				{
+					if (stripos($row[$upload_pref_name], $search_str) !== FALSE)
+					{
+						$key = 'channel_id_'.$row['channel_id'].'_'.$upload_pref_name;
+						$results[$key]['title'] = $row['channel_title'].': '.lang($upload_pref_name);
+						$results[$key]['current'] = $row[$upload_pref_name];
+						$results[$key]['current_html'] = preg_replace('/('.preg_quote($search_str, '/').')/i', '<strong>$1</strong>', $row[$upload_pref_name]);
+						$results[$key]['updated'] = str_ireplace($search_str, $replace[$id], $row[$upload_pref_name]);
 					}
 				}
 			}
@@ -177,6 +212,7 @@ class Reelocate_mcp {
 		}
 		
 		$site_prefs = array();
+		$channel_prefs = array();
 		$upload_prefs = array();
 		
 		// loop through the POST data
@@ -192,6 +228,12 @@ class Reelocate_mcp {
 					// standard site preference
 					$site_prefs[$setting_id] = $this->EE->input->post($setting_id, TRUE);
 				}
+				elseif (strpos($setting_id, 'channel_id_') !== FALSE)
+				{
+					// channel preference
+					preg_match('/channel_id_([\d]+)_([\w]+)/i', $setting_id, $matches);
+					$channel_prefs[$matches[1]][$matches[2]] = $this->EE->input->post($setting_id, TRUE);
+				}
 				elseif (strpos($setting_id, 'upload_dir_') !== FALSE)
 				{
 					// upload dir preference
@@ -204,6 +246,13 @@ class Reelocate_mcp {
 		// update the site prefs
 		$this->EE->config->update_site_prefs($site_prefs);
 		$updated_count = count($site_prefs);
+		
+		// update the channel prefs
+		foreach ($channel_prefs as $id => $data)
+		{
+			$this->EE->db->update('channels', $data, array('channel_id' => $id));
+			$updated_count += count($data);
+		}
 		
 		// update the upload prefs
 		foreach ($upload_prefs as $id => $data)

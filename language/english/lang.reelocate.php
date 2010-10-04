@@ -17,6 +17,7 @@ $lang = array(
 	'reelocate_replacement_value' => 'Replacement Value',
 	
 	'reelocate_site_prefs' => 'Site Preferences',
+	'reelocate_channel_prefs' => 'Channel Preferences',
 	'reelocate_upload_prefs' => 'Upload Preferences',
 	'reelocate_current_value' => 'Current Value',
 	'reelocate_new_value' => 'New Value',
