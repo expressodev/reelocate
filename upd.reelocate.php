@@ -31,7 +31,7 @@
 
 class Reelocate_upd { 
 
-    var $version = '1.0';
+    var $version = '1.1';
 	
     function Reelocate_upd() 
     {
