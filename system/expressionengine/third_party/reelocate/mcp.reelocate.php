@@ -56,7 +56,7 @@ class Reelocate_mcp {
 		$data['current_site_url'] = preg_replace('/http[s]?:\/\//i', '', $data['current_site_url']);
 		$data['site_url'] = $data['current_site_url'];
 		
-		return $this->EE->load->view('reelocate_index', $data, TRUE);
+		return $this->EE->load->view('index', $data, TRUE);
 	}
 	
 	public function preview()
@@ -102,7 +102,7 @@ class Reelocate_mcp {
 		$data['channel_prefs'] = $this->_find_channel_prefs($search, $replace);
 		$data['upload_prefs'] = $this->_find_upload_prefs($search, $replace);
 		
-		return $this->EE->load->view('reelocate_preview', $data, TRUE);
+		return $this->EE->load->view('preview', $data, TRUE);
 	}
 	
 	private function _find_site_prefs($search, $replace)
