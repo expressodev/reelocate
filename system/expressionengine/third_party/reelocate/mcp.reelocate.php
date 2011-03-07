@@ -31,7 +31,7 @@
 
 class Reelocate_mcp {
 	
-	function Reelocate_mcp()
+	public function __construct()
 	{
 		$this->EE =& get_instance();
 		$this->EE->load->library('table');
@@ -41,7 +41,7 @@ class Reelocate_mcp {
 		define('REELOCATE_CP', 'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=reelocate');
 	}
 	
-	function index()
+	public function index()
 	{
 		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_module_name'));
 		
@@ -59,7 +59,7 @@ class Reelocate_mcp {
 		return $this->EE->load->view('reelocate_index', $data, TRUE);
 	}
 	
-	function preview()
+	public function preview()
 	{
 		$this->EE->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
 		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_preview_changes'));
@@ -105,7 +105,7 @@ class Reelocate_mcp {
 		return $this->EE->load->view('reelocate_preview', $data, TRUE);
 	}
 	
-	function _find_site_prefs($search, $replace)
+	private function _find_site_prefs($search, $replace)
 	{
 		if (!is_array($search) OR !is_array($replace)) return;
 		if (count($search) != count($replace)) return;
@@ -134,7 +134,7 @@ class Reelocate_mcp {
 		return $results;
 	}
 	
-	function _find_channel_prefs($search, $replace)
+	private function _find_channel_prefs($search, $replace)
 	{
 		if (!is_array($search) OR !is_array($replace)) return;
 		if (count($search) != count($replace)) return;
@@ -167,7 +167,7 @@ class Reelocate_mcp {
 		return $results;
 	}
 	
-	function _find_upload_prefs($search, $replace)
+	private function _find_upload_prefs($search, $replace)
 	{
 		if (!is_array($search) OR !is_array($replace)) return;
 		if (count($search) != count($replace)) return;
@@ -200,7 +200,7 @@ class Reelocate_mcp {
 		return $results;
 	}
 	
-	function update()
+	public function update()
 	{
 		$this->EE->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
 		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_success'));
@@ -265,4 +265,4 @@ class Reelocate_mcp {
 	}
 }
 
-/* End of file mcp.reelocate.php */
+/* End of file ./system/expressionengine/third_party/reelocate/mcp.reelocate.php */

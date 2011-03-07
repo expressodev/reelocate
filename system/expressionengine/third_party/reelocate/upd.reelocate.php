@@ -31,14 +31,14 @@
 
 class Reelocate_upd { 
 
-    var $version = '1.1';
+	var $version = '1.1';
 	
-    function Reelocate_upd() 
-    {
+	public function __construct()
+	{
 		$this->EE =& get_instance();
-    }
-    
-    function install()
+	}
+	
+	public function install()
 	{	
 		// register module
 		$this->EE->db->insert('modules', array(
@@ -48,20 +48,20 @@ class Reelocate_upd {
 			'has_publish_fields' => 'n'));
 		
 		return TRUE;
-    }
-	
-	function update($current = '')
-	{
-		return FALSE;
 	}
 	
-    function uninstall()
+	public function update($current = '')
+	{
+		return $current < $this->version;
+	}
+	
+	public function uninstall()
 	{
 		$this->EE->db->where('module_name', 'Reelocate');
 		$this->EE->db->delete('modules');
 		
 		return TRUE;
-    }
+	}
 }
 
-/* End of file upd.reelocate.php */
+/* End of file ./system/expressionengine/third_party/reelocate/upd.reelocate.php */
