@@ -12,14 +12,18 @@ stores your sites URL in hundreds of places, as well as the server path (documen
 OK, maybe that is a slight exaggeration, but on average REElocate finds over
 30 settings which need updating. Worse, these are spread between many different
 configuration pages all over the place - from regular settings, channel settings,
-upload settings etc… the list goes on.
+upload settings etc... the list goes on.
+
+Requirements
+------------
+
+* ExpressionEngine 2.1.3+
 
 Installation
 ------------
 
-To install REElocate, simply upload the entire 'reelocate' module directory to
-`./system/expressionengine/third_party/reelocate` on your web server. You should then be able
-to find REElocate in the modules list of your control panel (under Add-ons > Modules).
+1. Copy the entire `reelocate` folder to `/system/expressionengine/third_party` on your server.
+2. Enable the module under Add-ons > Modules in your ExpressionEngine control panel.
 
 Changelog
 ---------
