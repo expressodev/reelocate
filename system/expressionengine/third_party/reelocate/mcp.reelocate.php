@@ -141,7 +141,7 @@ class Reelocate_mcp {
 		
 		// search for upload preferences
 		$results = array();
-		$channel_prefs = $this->EE->db->get('channels')->result_array();
+		$channel_prefs = $this->EE->db->where('site_id',$this->EE->config->item('site_id'))->get('channels')->result_array();
 		// loop through channels
 		foreach ($channel_prefs as $row)
 		{
@@ -174,7 +174,7 @@ class Reelocate_mcp {
 		
 		// search for upload preferences
 		$results = array();
-		$upload_prefs = $this->EE->db->get('upload_prefs')->result_array();
+		$upload_prefs = $this->EE->db->where('site_id',$this->EE->config->item('site_id'))->get('upload_prefs')->result_array();
 		// loop through upload directories
 		foreach ($upload_prefs as $row)
 		{
