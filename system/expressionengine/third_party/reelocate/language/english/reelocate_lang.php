@@ -29,4 +29,4 @@ $lang = array(
 	'url' => 'URL',
 );
 
-/* End of file lang.reelocate.php */
+/* End of file ./system/expressionengine/third_party/reelocate/language/english/reelocate_lang.php */

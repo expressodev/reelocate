@@ -30,8 +30,8 @@
  */
 
 class Reelocate_upd { 
-
-	var $version = '1.1';
+	
+	var $version = '1.2';
 	
 	public function __construct()
 	{

@@ -28,6 +28,10 @@ Installation
 Changelog
 ---------
 
+**1.2** *(2011-03-08)*
+
+* Updated directory structure, and updated code to PHP5 syntax
+
 **1.1** *(2010-10-04)*
 
 * Added detection for many more URLs and paths stored in channel preferences
