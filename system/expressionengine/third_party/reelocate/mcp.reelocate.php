@@ -149,7 +149,7 @@ class Reelocate_mcp {
 			foreach ($search as $id => $search_str)
 			{
 				// loop through channel preference names
-				foreach (array('channel_url', 'channel_notify_emails', 'comment_url', 'search_results_url', 'ping_return_url', 'rss_url') as $upload_pref_name)
+				foreach (array('channel_url', 'channel_notify_emails', 'comment_url', 'search_results_url', 'rss_url') as $upload_pref_name)
 				{
 					if (stripos($row[$upload_pref_name], $search_str) !== FALSE)
 					{
