@@ -31,23 +31,18 @@
 
 class Reelocate_upd { 
 	
-	var $version = '1.2';
-	
-	public function __construct()
-	{
-		$this->EE =& get_instance();
-	}
+	var $version = '1.3';
 	
 	public function install()
 	{	
 		// register module
-		$this->EE->db->insert('modules', array(
+		ee()->db->insert('modules', array(
 			'module_name' => 'Reelocate',
 			'module_version' => $this->version,
 			'has_cp_backend' => 'y',
 			'has_publish_fields' => 'n'));
 		
-		return TRUE;
+		return true;
 	}
 	
 	public function update($current = '')
@@ -57,10 +52,9 @@ class Reelocate_upd {
 	
 	public function uninstall()
 	{
-		$this->EE->db->where('module_name', 'Reelocate');
-		$this->EE->db->delete('modules');
+		ee()->db->where('module_name', 'Reelocate')->delete('modules');
 		
-		return TRUE;
+		return true;
 	}
 }
 

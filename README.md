@@ -28,6 +28,10 @@ Installation
 Changelog
 ---------
 
+**1.3** *(2013-10-07)*
+
+* Fix deprecation warnings in EE 2.6+
+
 **1.2** *(2011-03-08)*
 
 * Updated directory structure, and updated code to PHP5 syntax

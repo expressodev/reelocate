@@ -33,55 +33,54 @@ class Reelocate_mcp {
 	
 	public function __construct()
 	{
-		$this->EE =& get_instance();
-		$this->EE->load->library('table');
-		$this->EE->load->helper('form');
-		$this->EE->load->helper('path');
+		ee()->load->library('table');
+		ee()->load->helper('form');
+		ee()->load->helper('path');
 		
 		define('REELOCATE_CP', 'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=reelocate');
 	}
 	
 	public function index()
 	{
-		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_module_name'));
+		ee()->view->cp_page_title = lang('reelocate_module_name');
 		
 		$data = array(
 			'submit_url' => REELOCATE_CP.AMP.'method=preview',
-			'current_site_url' => rtrim($this->EE->config->item('site_url'), '/\\'),
-			'current_site_path' => rtrim(dirname(dirname($this->EE->config->item('avatar_path'))), '/\\'),
+			'current_site_url' => rtrim(ee()->config->item('site_url'), '/\\'),
+			'current_site_path' => rtrim(dirname(dirname(ee()->config->item('avatar_path'))), '/\\'),
 			'site_path' => rtrim(set_realpath('..'), '/\\'),
-			'cp_url' => $this->EE->config->item('site_url'),
+			'cp_url' => ee()->config->item('site_url'),
 		);
 		
 		$data['current_site_url'] = preg_replace('/http[s]?:\/\//i', '', $data['current_site_url']);
 		$data['site_url'] = $data['current_site_url'];
 		
-		return $this->EE->load->view('index', $data, TRUE);
+		return ee()->load->view('index', $data, true);
 	}
 	
 	public function preview()
 	{
-		$this->EE->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
-		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_preview_changes'));
-		$this->EE->lang->loadfile('admin');
-		$this->EE->lang->loadfile('admin_content');
-		$this->EE->lang->loadfile('design');
-		$this->EE->lang->loadfile('tools');
+		ee()->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
+		ee()->view->cp_page_title = lang('reelocate_preview_changes');
+		ee()->lang->loadfile('admin');
+		ee()->lang->loadfile('admin_content');
+		ee()->lang->loadfile('design');
+		ee()->lang->loadfile('tools');
 		
 		$data = array(
 			'config' => array(),
 			'submit_url' => REELOCATE_CP.AMP.'method=update',
-			'current_site_url' => rtrim($this->EE->input->post('current_site_url', TRUE), '/\\'),
-			'current_site_path' => rtrim($this->EE->input->post('current_site_path', TRUE), '/\\'),
-			'site_url' => rtrim($this->EE->input->post('site_url', TRUE), '/\\'),
-			'site_path' => rtrim($this->EE->input->post('site_path', TRUE), '/\\')
+			'current_site_url' => rtrim(ee()->input->post('current_site_url', true), '/\\'),
+			'current_site_path' => rtrim(ee()->input->post('current_site_path', true), '/\\'),
+			'site_url' => rtrim(ee()->input->post('site_url', true), '/\\'),
+			'site_path' => rtrim(ee()->input->post('site_path', true), '/\\')
 		);
 		
 		if (empty($data['current_site_url']) OR empty($data['current_site_path']) OR
 			empty($data['site_url']) OR empty($data['site_path']))
 		{
-			$this->EE->session->set_flashdata('message_failure', lang('reelocate_no_postdata'));
-			$this->EE->functions->redirect(BASE.AMP.REELOCATE_CP);
+			ee()->session->set_flashdata('message_failure', lang('reelocate_no_postdata'));
+			ee()->functions->redirect(BASE.AMP.REELOCATE_CP);
 		}
 		
 		// search for offending settings
@@ -102,7 +101,7 @@ class Reelocate_mcp {
 		$data['channel_prefs'] = $this->_find_channel_prefs($search, $replace);
 		$data['upload_prefs'] = $this->_find_upload_prefs($search, $replace);
 		
-		return $this->EE->load->view('preview', $data, TRUE);
+		return ee()->load->view('preview', $data, true);
 	}
 	
 	private function _find_site_prefs($search, $replace)
@@ -112,14 +111,14 @@ class Reelocate_mcp {
 		
 		// search for standard site preferences
 		$results = array();
-		foreach ($this->EE->config->config as $key => $value)
+		foreach (ee()->config->config as $key => $value)
 		{
 			if (is_string($value))
 			{
 				// loop through find/replace strings
 				foreach ($search as $id => $search_str)
 				{
-					if (stripos($value, $search_str) !== FALSE)
+					if (stripos($value, $search_str) !== false)
 					{
 						$results[$key]['title'] = lang($key);
 						$results[$key]['current'] = $value;
@@ -141,7 +140,7 @@ class Reelocate_mcp {
 		
 		// search for upload preferences
 		$results = array();
-		$channel_prefs = $this->EE->db->where('site_id',$this->EE->config->item('site_id'))->get('channels')->result_array();
+		$channel_prefs = ee()->db->where('site_id',ee()->config->item('site_id'))->get('channels')->result_array();
 		// loop through channels
 		foreach ($channel_prefs as $row)
 		{
@@ -151,7 +150,7 @@ class Reelocate_mcp {
 				// loop through channel preference names
 				foreach (array('channel_url', 'channel_notify_emails', 'comment_url', 'search_results_url', 'rss_url') as $upload_pref_name)
 				{
-					if (stripos($row[$upload_pref_name], $search_str) !== FALSE)
+					if (stripos($row[$upload_pref_name], $search_str) !== false)
 					{
 						$key = 'channel_id_'.$row['channel_id'].'_'.$upload_pref_name;
 						$results[$key]['title'] = $row['channel_title'].': '.lang($upload_pref_name);
@@ -174,7 +173,7 @@ class Reelocate_mcp {
 		
 		// search for upload preferences
 		$results = array();
-		$upload_prefs = $this->EE->db->where('site_id',$this->EE->config->item('site_id'))->get('upload_prefs')->result_array();
+		$upload_prefs = ee()->db->where('site_id',ee()->config->item('site_id'))->get('upload_prefs')->result_array();
 		// loop through upload directories
 		foreach ($upload_prefs as $row)
 		{
@@ -184,7 +183,7 @@ class Reelocate_mcp {
 				// loop through upload preference names
 				foreach (array('server_path', 'url') as $upload_pref_name)
 				{
-					if (stripos($row[$upload_pref_name], $search_str) !== FALSE)
+					if (stripos($row[$upload_pref_name], $search_str) !== false)
 					{
 						$key = 'upload_dir_'.$row['id'].'_'.$upload_pref_name;
 						$results[$key]['title'] = $row['name'].' '.lang($upload_pref_name);
@@ -202,13 +201,13 @@ class Reelocate_mcp {
 	
 	public function update()
 	{
-		$this->EE->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
-		$this->EE->cp->set_variable('cp_page_title', lang('reelocate_success'));
+		ee()->cp->set_breadcrumb(BASE.AMP.REELOCATE_CP, lang('reelocate_module_name'));
+		ee()->view->cp_page_title = lang('reelocate_success');
 		
-		if ($this->EE->input->post('submit') === FALSE)
+		if (ee()->input->post('submit') === false)
 		{
-			$this->EE->session->set_flashdata('message_failure', lang('reelocate_no_postdata'));
-			$this->EE->functions->redirect(BASE.AMP.REELOCATE_CP);
+			ee()->session->set_flashdata('message_failure', lang('reelocate_no_postdata'));
+			ee()->functions->redirect(BASE.AMP.REELOCATE_CP);
 		}
 		
 		$site_prefs = array();
@@ -223,41 +222,41 @@ class Reelocate_mcp {
 				$setting_id = substr($key, 0, $pos);
 				
 				// find out what type of setting we are dealing with
-				if ($this->EE->config->item($setting_id) !== FALSE)
+				if (ee()->config->item($setting_id) !== false)
 				{
 					// standard site preference
-					$site_prefs[$setting_id] = $this->EE->input->post($setting_id, TRUE);
+					$site_prefs[$setting_id] = ee()->input->post($setting_id, true);
 				}
-				elseif (strpos($setting_id, 'channel_id_') !== FALSE)
+				elseif (strpos($setting_id, 'channel_id_') !== false)
 				{
 					// channel preference
 					preg_match('/channel_id_([\d]+)_([\w]+)/i', $setting_id, $matches);
-					$channel_prefs[$matches[1]][$matches[2]] = $this->EE->input->post($setting_id, TRUE);
+					$channel_prefs[$matches[1]][$matches[2]] = ee()->input->post($setting_id, true);
 				}
-				elseif (strpos($setting_id, 'upload_dir_') !== FALSE)
+				elseif (strpos($setting_id, 'upload_dir_') !== false)
 				{
 					// upload dir preference
 					preg_match('/upload_dir_([\d]+)_([\w]+)/i', $setting_id, $matches);
-					$upload_prefs[$matches[1]][$matches[2]] = $this->EE->input->post($setting_id, TRUE);
+					$upload_prefs[$matches[1]][$matches[2]] = ee()->input->post($setting_id, true);
 				}
 			}
 		}
 		
 		// update the site prefs
-		$this->EE->config->update_site_prefs($site_prefs);
+		ee()->config->update_site_prefs($site_prefs);
 		$updated_count = count($site_prefs);
 		
 		// update the channel prefs
 		foreach ($channel_prefs as $id => $data)
 		{
-			$this->EE->db->update('channels', $data, array('channel_id' => $id));
+			ee()->db->update('channels', $data, array('channel_id' => $id));
 			$updated_count += count($data);
 		}
 		
 		// update the upload prefs
 		foreach ($upload_prefs as $id => $data)
 		{
-			$this->EE->db->update('upload_prefs', $data, array('id' => $id));
+			ee()->db->update('upload_prefs', $data, array('id' => $id));
 			$updated_count += count($data);
 		}
 		
