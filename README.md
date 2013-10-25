@@ -17,7 +17,7 @@ upload settings etc... the list goes on.
 Requirements
 ------------
 
-* ExpressionEngine 2.1.3+
+* ExpressionEngine 2.6+
 
 Installation
 ------------
