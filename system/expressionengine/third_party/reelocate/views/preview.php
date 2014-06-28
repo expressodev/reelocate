@@ -30,10 +30,10 @@
 	}
 ?>
 
-<? if ($results): ?>
+<?php if ($results): ?>
 	<?= form_submit(array('name' => 'submit', 'value' => lang('reelocate_submit_changes'), 'class' => 'submit')); ?>
-<? else: ?>
+<?php else: ?>
 	<p><?= lang('reelocate_no_results') ?></p>
-<? endif ?>
+<?php endif ?>
 
 <?= form_close(); ?>
